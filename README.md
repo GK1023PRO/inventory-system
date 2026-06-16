@@ -10,6 +10,8 @@ A simple web-based inventory management system built with Python, Flask, and SQL
 - ❌ Delete products
 - ⚠️ Low stock alerts (below 5 units)
 - 🎨 Clean Bootstrap UI
+- ✅ Input validation with error messages
+- 🐳 Docker support with persistent data
 
 ## Tech Stack
 
@@ -17,6 +19,7 @@ A simple web-based inventory management system built with Python, Flask, and SQL
 - Flask
 - SQLite
 - Bootstrap 5
+- Docker
 
 ## Run Locally
 
@@ -33,10 +36,10 @@ python app.py
 1. Build the image:
 docker build -t inventory-system .
 
-2. Run the container:
-docker run -p 5003:5000 inventory-system
+2. Run the container with persistent data:
+docker run -p 5003:5000 -v inventory-data:/app/data inventory-system
 
-3. Visit: http://127.0.0.1:5000
+3. Visit: http://127.0.0.1:5003
 
 ## Project Structure
 app/
@@ -51,8 +54,18 @@ app/
 
 ├── README.md
 
+├── .gitignore
+
 └── templates/
 
 ├── index.html
 
 ├── add_product.html
+
+└── edit_product.html
+
+## Notes
+
+- Data persists between Docker restarts using a Docker volume
+- Low stock alert triggers when quantity is below 5 units
+- Negative values are blocked on both frontend and backend

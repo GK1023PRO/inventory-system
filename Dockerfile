@@ -7,6 +7,8 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
+RUN mkdir -p /app/data
+
 EXPOSE 5000
 
 CMD ["python", "app.py"]
