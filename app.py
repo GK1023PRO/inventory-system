@@ -4,12 +4,12 @@ import sqlite3
 app = Flask(__name__)
 
 LOW_STOCK_THRESHOLD = 5
-
+DB_PATH = "/app/data/inventory.db"
 # -----------------------
 # Database Setup
 # -----------------------
 def init_db():
-    conn = sqlite3.connect("inventory.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS products (
@@ -30,7 +30,7 @@ init_db()
 # -----------------------
 @app.route('/')
 def home():
-    conn = sqlite3.connect("inventory.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
@@ -47,7 +47,7 @@ def add_product():
         category = request.form['category']
         price = request.form['price']
         quantity = request.form['quantity']
-        conn = sqlite3.connect("inventory.db")
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         cursor.execute(
             "INSERT INTO products (name, category, price, quantity) VALUES (?, ?, ?, ?)",
@@ -63,7 +63,7 @@ def add_product():
 # -----------------------
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_product(id):
-    conn = sqlite3.connect("inventory.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     if request.method == 'POST':
         name = request.form['name']
@@ -87,7 +87,7 @@ def edit_product(id):
 # -----------------------
 @app.route('/delete/<int:id>')
 def delete_product(id):
-    conn = sqlite3.connect("inventory.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("DELETE FROM products WHERE id=?", (id,))
     conn.commit()
